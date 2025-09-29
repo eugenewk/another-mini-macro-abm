@@ -1,0 +1,46 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments (if you ever make local ones)
+.venv/
+venv/
+.env/
+
+# Compiled / build artifacts
+build/
+dist/
+*.egg-info/
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# IDE/editor metadata
+.vscode/
+.idea/
+*.swp
+*~
+
+# Test/coverage caches
+.coverage
+coverage.xml
+htmlcov/
+.pytest_cache/
+
+# uv lock/cache files
+.uv/               # uv’s local cache directory
+
+# Data/output (if generated during runs)
+*.log
+*.csv
+*.parquet
+*.h5
+*.db
+outputs/
+results/
+
+# OS-specific junk
+.DS_Store
+Thumbs.db
