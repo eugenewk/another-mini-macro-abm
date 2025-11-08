@@ -1,0 +1,7 @@
+agent_class_path: models.simple_model.agents.simple_agent.simple_agent.SimpleAgent
+
+params:
+    agent_param: 10
+
+mixins:
+    - models.simple_model.agents.simple_agent.mixins.simple_mixin.SimpleMixin
