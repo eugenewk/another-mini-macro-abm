@@ -1,8 +1,8 @@
 simulation:
-  steps: 100
+  steps: 4
 
 model:
   agents:
     simple:
-      count: 5
+      count: 3
       config_path: "agents/simple_agent/simple_agent.yaml"

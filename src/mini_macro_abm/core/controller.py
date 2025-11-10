@@ -1,4 +1,5 @@
 import logging
+from typing import List
 from mini_macro_abm.core.registry import Registry
 from mini_macro_abm.core.agent_factory.factory import AgentFactory
 from mini_macro_abm.core.sim_engine.engine import SimEngine
@@ -9,7 +10,8 @@ class Controller:
     def __init__(self):
         self.registry = Registry()
         self.factory = AgentFactory(self.registry)
-        self.simEngine = SimEngine(self.registry)
+        self.simEngine = None # set at runtime
+
 
     def run_simulation(self, model_folder: str):
         '''
@@ -34,7 +36,7 @@ class Controller:
         print(agentRoster)
 
         # assign roster to sim engine
-        self.simEngine.agents = agentRoster
+        self.simEngine = SimEngine(self.registry, agentRoster)
 
         # pass registry and agent objects to the sim engine
         self.simEngine.set_initial_agent_values()
@@ -44,7 +46,11 @@ class Controller:
         self.simEngine.set_simulation_params()
         print(self.simEngine.totalSimSteps)
 
+        # run sim!
+        self.simEngine.run_simulation()
+        print(agentRoster)
 
+        
 
 
 # test script to run simulation

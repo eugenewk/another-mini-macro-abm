@@ -1,9 +1,10 @@
+
 """simple mixin"""
 
 class SimpleMixin:
     def __init__(self):
         super().__init__()
-        self.mixin_attribute = 0
+        # note: define parameters in the main agent class
     
-    def increment_attribute(self):
-        self.mixin_attribute += 1
+    def increment_mixin_attribute(self):
+        self.mixin_param += 1

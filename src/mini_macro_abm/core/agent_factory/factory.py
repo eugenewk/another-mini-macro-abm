@@ -88,10 +88,11 @@ class AgentFactory:
         for agent_name, agent_class in agent_classes.items():
             agent_count = self.registry.model_config['agents'][agent_name]['count']
 
-            # instantiate individual agent objects
+            # instantiate individual agent objects and give them ids
             agents = []
             for i in range(agent_count):
-                agent = agent_class()
+                agent_id = f'{agent_class}{i}'
+                agent = agent_class(agent_id)
                 agents.append(agent)
 
             agent_roster[agent_name] = agents

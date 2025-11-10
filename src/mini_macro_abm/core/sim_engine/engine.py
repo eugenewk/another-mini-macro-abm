@@ -1,13 +1,14 @@
 import logging
 from typing import List, Dict
 from mini_macro_abm.core.registry import Registry
+from mini_macro_abm.core.data_collector import DataCollector
 
 logger = logging.getLogger(__name__)
 
 class SimEngine:
-    def __init__(self, registry: Registry):
+    def __init__(self, registry: Registry, agents: Dict[str, List[object]]):
         self.registry: Registry = registry
-        self.agents: Dict[str, List[object]]
+        self.agents: Dict[str, List[object]] = agents
         self.schedule: object # to be implemented
         self.totalSimSteps: int # total steps for the simulation
     
@@ -24,3 +25,18 @@ class SimEngine:
                 for param_name, param_value in params.items():
                     setattr(agent, param_name, param_value) # excluding check for now, fail fast if not present.
                     
+    def run_simulation(self):
+
+        data = DataCollector(self.agents)
+
+        for step in range(self.totalSimSteps):
+            self._step()
+            data.collect_data(step)
+
+        data.display_data()
+
+    def _step(self):  
+        for agent_type, agent_list in self.agents.items():
+            for agent in agent_list:
+                agent.increment_agent_param()
+                agent.increment_mixin_attribute()
