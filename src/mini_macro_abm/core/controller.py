@@ -35,18 +35,18 @@ class Controller:
         agentRoster = self.factory.instantiate_agents(agentClasses)
         print(agentRoster)
 
-        # assign roster to sim engine
+        # assign roster and registry to sim engine
         self.simEngine = SimEngine(self.registry, agentRoster)
 
-        # pass registry and agent objects to the sim engine
+        # set initial agent values from registry config
         self.simEngine.set_initial_agent_values()
         print(agentRoster)
 
-        # load simulation parameters into engine
+        # load simulation parameters into engine from registry that was previously passed to it
         self.simEngine.set_simulation_params()
         print(self.simEngine.totalSimSteps)
 
-        # run sim!
+        # run sim
         self.simEngine.run_simulation()
         print(agentRoster)
 

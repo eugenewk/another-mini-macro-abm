@@ -1,6 +1,5 @@
 import logging
 from typing import Dict, Any
-from mini_macro_abm.core.data_collector import AgentDataObject
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +12,6 @@ class BaseAgent:
     def __init__(self, id):
         super().__init__()
         self.id = id
-        self.agent_data = AgentDataObject(id)
         # will add stock matrix here
         pass
 

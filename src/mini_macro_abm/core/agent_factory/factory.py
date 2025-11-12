@@ -40,7 +40,7 @@ class AgentFactory:
             logger.warning(f"could not load from {agent_class_path}")
             raise
 
-        base_classes = [BaseAgent, AgentClass]
+        base_classes = [AgentClass] # removing base agent for now, making inheritance too messy and my head hurt
         agent_mixins = []
 
         for mixin_path in mixin_paths:
@@ -91,7 +91,7 @@ class AgentFactory:
             # instantiate individual agent objects and give them ids
             agents = []
             for i in range(agent_count):
-                agent_id = f'{agent_class}{i}'
+                agent_id = f'{agent_name}_{i}'
                 agent = agent_class(agent_id)
                 agents.append(agent)
 

@@ -1,0 +1,5 @@
+simulation:
+  steps: 6
+
+model:
+  config_path: "models.simple_model.run_config.yaml"
