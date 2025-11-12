@@ -2,4 +2,4 @@ simulation:
   steps: 6
 
 model:
-  config_path: "models.simple_model.run_config.yaml"
+  model_config: "src/models/simple_model/model_config.yaml"

@@ -14,7 +14,10 @@ class Registry:
         self.model_config: Dict[str, Any] = {}
         self.sim_config: Dict[str, Any] = {}
         self.agent_configs: Dict[str, Any] = {}
-        self.sim_folder = None
+        self.sim_folder = None # to delete
+        
+        self.run_config_file = None
+        self.model_folder = None
 
     def clear(self) -> None:
         self.model_config = {}
@@ -22,23 +25,27 @@ class Registry:
         self.agent_configs = {}
         self.sim_folder = None
 
-
-    def load_run_config_from_folder(self, folder_path: str) -> None:
-        """finds and loads main sim config from model folder"""
-        self.sim_folder = Path(folder_path)
-        if not self.sim_folder.exists():
-            raise FileNotFoundError(f"folder not found: {self.sim_folder}")
+    def load_run_config(self, run_config_file:str) -> None:
         
-        run_config_file = self.sim_folder / "run_config.yaml" #leaving this hardcoded for now
-        if not run_config_file.exists():
-            raise FileNotFoundError(f"run_config.yaml not found in {self.sim_folder}")
+        self.run_config_file = run_config_file
         
-        # need to load model config params
         with open(run_config_file, 'r') as f:
-            run_config = yaml.safe_load(f)
+            run_config_data = yaml.safe_load(f)
 
-        self.sim_config = run_config.get('simulation')
-        self.model_config = run_config.get('model')
+        # set simulation config from run config folder (sim steps)
+        self.sim_config = run_config_data.get('simulation')
+
+        model_ref = run_config_data.get('model')
+        model_config_path = model_ref.get('model_config')
+        if not model_config_path:
+            raise ValueError("Run config must point to a model_config.yaml file")
+
+        self.model_folder = Path(model_config_path).parent # returns the parent folder of the model config file
+        
+        with open(model_config_path, 'r') as f:
+            model_config = yaml.safe_load(f)
+
+        self.model_config = model_config.get('model')
 
         if self.sim_config is None:
             raise ValueError(f"missing simulation object in run_config.yaml in {self.sim_folder}")
@@ -50,8 +57,6 @@ class Registry:
 
         self._load_agent_configs()
         
-        # also need to load agent types and paths
-        
     def _load_agent_configs(self):
         """Load agent configurations from relative file paths"""
         agents_config = self.model_config.get('agents')
@@ -61,7 +66,7 @@ class Registry:
         
         for agent_type, agent_config in agents_config.items():
             if 'config_path' in agent_config:
-                agent_file = self.sim_folder / agent_config['config_path']
+                agent_file = self.model_folder / agent_config['config_path']
 
                 if agent_file.exists():
                     with open(agent_file, 'r') as f:

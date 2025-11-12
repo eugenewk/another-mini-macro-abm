@@ -13,7 +13,7 @@ class Controller:
         self.simEngine = None # set at runtime
 
 
-    def run_simulation(self, model_folder: str):
+    def run_simulation(self, run_config: str):
         '''
             Order of operations here:
             1. Load the model and the component registry
@@ -24,7 +24,7 @@ class Controller:
         '''
         # first, clear and populate the registry with the model components
         self.registry.clear()
-        self.registry.load_run_config_from_folder(model_folder) 
+        self.registry.load_run_config(run_config)
         # print(self.registry)
 
         # pass the registry to the agent factory to get back the composed classes
@@ -55,7 +55,7 @@ class Controller:
 
 # test script to run simulation
 controller = Controller()
-controller.run_simulation('src/models/simple_model')
+controller.run_simulation('src/simulation_runs/run_config.yaml')
 
 
 
