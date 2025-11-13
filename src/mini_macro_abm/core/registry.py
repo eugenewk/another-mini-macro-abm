@@ -11,19 +11,24 @@ logger = logging.getLogger(__name__)
 
 class Registry:
     def __init__(self):
+        # used for tracking the run config and model folders
+        self.run_config_file = None
+        self.model_folder = None
+        self.output_dir = None
+
+        # these store the data from the files and form the registry
         self.model_config: Dict[str, Any] = {}
         self.sim_config: Dict[str, Any] = {}
         self.agent_configs: Dict[str, Any] = {}
-        self.sim_folder = None # to delete
-        
-        self.run_config_file = None
-        self.model_folder = None
+
 
     def clear(self) -> None:
+        self.run_config_file = None
+        self.model_folder = None
         self.model_config = {}
         self.sim_config = {}
         self.agent_configs = {}
-        self.sim_folder = None
+
 
     def load_run_config(self, run_config_file:str) -> None:
         
@@ -34,9 +39,11 @@ class Registry:
 
         # set simulation config from run config folder (sim steps)
         self.sim_config = run_config_data.get('simulation')
+        self.output_dir = run_config_data.get('output_dir')
+        if not self.output_dir:
+            raise ValueError("no output dir")
 
-        model_ref = run_config_data.get('model')
-        model_config_path = model_ref.get('model_config')
+        model_config_path = run_config_data.get('model')
         if not model_config_path:
             raise ValueError("Run config must point to a model_config.yaml file")
 
@@ -48,10 +55,10 @@ class Registry:
         self.model_config = model_config.get('model')
 
         if self.sim_config is None:
-            raise ValueError(f"missing simulation object in run_config.yaml in {self.sim_folder}")
+            raise ValueError(f"missing simulation object in run_config.yaml in {self.run_config_file}")
         
         if self.model_config is None:
-            raise ValueError(f"missing model object in run_config.yaml in {self.sim_folder}")
+            raise ValueError(f"missing model object in run_config.yaml in {self.run_config_file}")
 
         logger.info(f"loaded config from {run_config_file}")
 
@@ -62,8 +69,8 @@ class Registry:
         agents_config = self.model_config.get('agents')
 
         if agents_config is None:
-            raise ValueError(f"agent config not found in {self.sim_folder}")
-        
+            raise ValueError(f"agent config not found in {self.model_folder}")
+
         for agent_type, agent_config in agents_config.items():
             if 'config_path' in agent_config:
                 agent_file = self.model_folder / agent_config['config_path']
@@ -79,6 +86,6 @@ class Registry:
                 else:
                     raise ValueError(f"agent config file not found at {agent_file}")
             else:
-                raise ValueError(f"agent config_path not found for {agent_type} in {self.sim_folder}")
+                raise ValueError(f"agent config_path not found for {agent_type} in {self.model_folder}")
 
 

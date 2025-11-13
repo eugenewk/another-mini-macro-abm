@@ -25,7 +25,7 @@ class SimEngine:
                 for param_name, param_value in params.items():
                     setattr(agent, param_name, param_value) # excluding check for now, fail fast if not present.
                     
-    def run_simulation(self):
+    def run_simulation(self, output_data: bool):
 
         data = DataCollector(self.agents)
 
@@ -34,6 +34,8 @@ class SimEngine:
             data.collect_data(step)
 
         data.display_data()
+        if output_data:
+            data.write_data(self.registry.output_dir)
 
     def _step(self):  
         for agent_type, agent_list in self.agents.items():

@@ -1,5 +1,6 @@
 from typing import List, Dict
 import pandas as pd
+from pathlib import Path
 
 
 class AgentDataObject:
@@ -47,3 +48,24 @@ class DataCollector:
                 agent_data = agent.agent_data.return_data()
                 print(agent_data)
 
+    def write_data(self, output_dir: str):
+
+        output_path = Path(output_dir)
+        output_path.mkdir(parents=True, exist_ok=True)
+
+        # combine all agent dfs into one df and then output to csv
+        output_dfs: Dict[str, List[pd.DataFrame]] = {}
+        for agent_type, agents in self.agent_list.items():
+            agent_type_dfs = []
+            for agent in agents:
+                agent_df = agent.agent_data.return_data()
+                agent_type_dfs.append(agent_df)
+            output_dfs[agent_type] = agent_type_dfs
+
+        # for each entry in output_dfs, create one file per agent type and combine into one df
+        for agent_type, dfs in output_dfs.items():
+            combined_df = pd.concat(dfs, ignore_index=True)
+            output_file = output_path / f'{agent_type}_data.csv'
+            combined_df.to_csv(output_file, index=False)
+
+                

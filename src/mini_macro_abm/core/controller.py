@@ -47,11 +47,7 @@ class Controller:
         print(self.simEngine.totalSimSteps)
 
         # run sim
-        self.simEngine.run_simulation()
-        print(agentRoster)
-
-        
-
+        self.simEngine.run_simulation(output_data=True)
 
 # test script to run simulation
 controller = Controller()

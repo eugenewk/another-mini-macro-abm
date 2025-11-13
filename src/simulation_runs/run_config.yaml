@@ -1,5 +1,6 @@
 simulation:
-  steps: 6
+  steps: 5
 
-model:
-  model_config: "src/models/simple_model/model_config.yaml"
+model: "src/models/simple_model/model_config.yaml"
+
+output_dir: "src/simulation_runs/outputs"
