@@ -14,31 +14,28 @@ class SimEngine:
     
     def set_simulation_params(self):
         self.totalSimSteps = self.registry.sim_config['steps']
-
-    def set_initial_agent_values(self):
-        # iterate through agent configs and set the appropriate starting values in each agent object
-        for agent_type, agent_list in self.agents.items():
-            agent_config = self.registry.agent_configs.get(agent_type)
-            params = agent_config.get('params')
-
-            for agent in agent_list:
-                for param_name, param_value in params.items():
-                    setattr(agent, param_name, param_value) # excluding check for now, fail fast if not present.
                     
     def run_simulation(self, output_data: bool):
 
         data = DataCollector(self.agents)
 
         for step in range(self.totalSimSteps):
-            self._step()
+            self._step(step)
             data.collect_data(step)
 
         data.display_data()
         if output_data:
             data.write_data(self.registry.output_dir)
 
-    def _step(self):  
+    def _step(self, step: int):  
         for agent_type, agent_list in self.agents.items():
             for agent in agent_list:
                 agent.increment_agent_param()
                 agent.increment_mixin_attribute()
+                
+                if step < 2:
+                    agent.add_cash(10)
+                    agent.add_item('item', 1)
+                else: 
+                    agent.remove_cash(10)
+                    agent.add_item('item', -2)

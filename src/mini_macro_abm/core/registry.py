@@ -25,67 +25,29 @@ class Registry:
     def clear(self) -> None:
         self.run_config_file = None
         self.model_folder = None
+        self.output_dir = None
         self.model_config = {}
         self.sim_config = {}
         self.agent_configs = {}
-
-
-    def load_run_config(self, run_config_file:str) -> None:
         
-        self.run_config_file = run_config_file
-        
-        with open(run_config_file, 'r') as f:
+
+    def load_config(self, run_config: str) -> None:
+        self.run_config_file = run_config
+
+        with open(self.run_config_file, 'r') as f:
             run_config_data = yaml.safe_load(f)
 
-        # set simulation config from run config folder (sim steps)
+        print('run config:')
+        print(run_config_data)
+
+        # load sim config block
         self.sim_config = run_config_data.get('simulation')
-        self.output_dir = run_config_data.get('output_dir')
-        if not self.output_dir:
-            raise ValueError("no output dir")
+        # get output dir from the sim config block
+        self.output_dir = self.sim_config.get('output_dir')
 
-        model_config_path = run_config_data.get('model')
-        if not model_config_path:
-            raise ValueError("Run config must point to a model_config.yaml file")
-
-        self.model_folder = Path(model_config_path).parent # returns the parent folder of the model config file
-        
-        with open(model_config_path, 'r') as f:
-            model_config = yaml.safe_load(f)
-
-        self.model_config = model_config.get('model')
-
-        if self.sim_config is None:
-            raise ValueError(f"missing simulation object in run_config.yaml in {self.run_config_file}")
-        
-        if self.model_config is None:
-            raise ValueError(f"missing model object in run_config.yaml in {self.run_config_file}")
-
-        logger.info(f"loaded config from {run_config_file}")
-
-        self._load_agent_configs()
-        
-    def _load_agent_configs(self):
-        """Load agent configurations from relative file paths"""
-        agents_config = self.model_config.get('agents')
-
-        if agents_config is None:
-            raise ValueError(f"agent config not found in {self.model_folder}")
-
-        for agent_type, agent_config in agents_config.items():
-            if 'config_path' in agent_config:
-                agent_file = self.model_folder / agent_config['config_path']
-
-                if agent_file.exists():
-                    with open(agent_file, 'r') as f:
-                        agent_data=yaml.safe_load(f)
-                        if agent_type not in self.agent_configs:
-                            self.agent_configs[agent_type] = {}
-                        self.agent_configs[agent_type].update(agent_data)
-                        if self.agent_configs[agent_type] == {}:
-                            raise ValueError(f"agent config not loaded from {agent_file}")
-                else:
-                    raise ValueError(f"agent config file not found at {agent_file}")
-            else:
-                raise ValueError(f"agent config_path not found for {agent_type} in {self.model_folder}")
-
-
+        # load model config
+        self.model_config = run_config_data.get('model')
+        # load agent configs
+        print('model config:')
+        print(self.model_config)
+        self.agent_configs = self.model_config.get('agents')

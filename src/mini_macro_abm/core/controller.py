@@ -24,7 +24,7 @@ class Controller:
         '''
         # first, clear and populate the registry with the model components
         self.registry.clear()
-        self.registry.load_run_config(run_config)
+        self.registry.load_config(run_config)
         # print(self.registry)
 
         # pass the registry to the agent factory to get back the composed classes
@@ -39,7 +39,7 @@ class Controller:
         self.simEngine = SimEngine(self.registry, agentRoster)
 
         # set initial agent values from registry config
-        self.simEngine.set_initial_agent_values()
+        # self.simEngine.set_initial_agent_values()
         print(agentRoster)
 
         # load simulation parameters into engine from registry that was previously passed to it
@@ -51,7 +51,7 @@ class Controller:
 
 # test script to run simulation
 controller = Controller()
-controller.run_simulation('src/simulation_runs/run_config.yaml')
+controller.run_simulation('src/simulation_runs/combined_run_config.yaml')
 
 
 

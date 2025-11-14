@@ -1,23 +1,35 @@
 from typing import List, Dict
 import pandas as pd
 from pathlib import Path
+from mini_macro_abm.core.agent_utils.stock_matrix import StockMatrix
+import copy
 
 
 class AgentDataObject:
     def __init__(self, id):
         self.agent_id: int = id
+        self.stock_matrix: StockMatrix = None
         self.data: Dict[str, List] = {
-            'step' : []
+            'step' : [],
+            'stock_matrix_snapshots' : []
         }
 
-    def add_data_attributes(self, attrs: List[str]):
+    def add_data_attributes(self, stock_matrix: StockMatrix, attrs: List[str]):
+        self.stock_matrix = stock_matrix
         for attr in attrs:
             self.data[attr] = []
 
-    def record_step(self, step, agent_object: object):
+    def record_step(self, step, agent_object: object):    
+        # append step data
         self.data['step'].append(step)
+
+        # record stock matrix
+        snapshot = copy.deepcopy(self.stock_matrix) 
+        self.data['stock_matrix_snapshots'].append(snapshot)
+
+        # record other params
         for attr in self.data.keys():
-            if attr != 'step':
+            if attr != 'step' and attr != 'stock_matrix_snapshots':
                 data = getattr(agent_object, attr)
                 self.data[attr].append(data)
     

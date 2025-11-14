@@ -1,0 +1,13 @@
+simulation:
+  steps: 10
+  output_dir: "src/simulation_runs/outputs"
+
+model:
+  agents:
+    simple:
+      count: 2
+      agent_class_path: models.simple_model.agents.simple_agent.simple_agent.SimpleAgent
+      mixins:
+        - models.simple_model.agents.simple_agent.mixins.simple_mixin.SimpleMixin
+
+
