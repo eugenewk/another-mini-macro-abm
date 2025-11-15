@@ -20,15 +20,17 @@ class Registry:
         self.model_config: Dict[str, Any] = {}
         self.sim_config: Dict[str, Any] = {}
         self.agent_configs: Dict[str, Any] = {}
+        self.market_configs: Dict[str, Any] = {}
 
 
     def clear(self) -> None:
         self.run_config_file = None
         self.model_folder = None
         self.output_dir = None
-        self.model_config = {}
-        self.sim_config = {}
-        self.agent_configs = {}
+        self.model_config.clear()
+        self.sim_config.clear()
+        self.agent_configs.clear()
+        self.market_configs.clear()
         
 
     def load_config(self, run_config: str) -> None:
@@ -47,7 +49,12 @@ class Registry:
 
         # load model config
         self.model_config = run_config_data.get('model')
-        # load agent configs
+
         print('model config:')
         print(self.model_config)
+
+        # load agent configs
         self.agent_configs = self.model_config.get('agents')
+
+        # load market configs
+        self.market_configs = self.model_config.get('markets')

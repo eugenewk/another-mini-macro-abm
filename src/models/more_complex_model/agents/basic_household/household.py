@@ -1,29 +1,25 @@
 """simple agent file"""
-from models.simple_model.agents.simple_agent.mixins import simple_mixin
-from mini_macro_abm.core.agent_factory.base_agent import BaseAgent
 from mini_macro_abm.core.data_collector import AgentDataObject
 from mini_macro_abm.core.agent_utils.stock_matrix import StockMatrix
 
-class SimpleAgent:
+class BasicHousehold:
 
     def __init__(self, id):
         # core setup params, requires id given by sim engine
         self.id = id
-        self.agent_data = AgentDataObject(id) # creates data tracking object
         self.stock_matrix = StockMatrix() # gives stock matrix
+        self.agent_data = AgentDataObject(id, self.stock_matrix) # creates data tracking object
+
 
         # define all custom agent params here
         self.agent_param = 0
-        self.mixin_param = 0 # note that this is used by a mixin function
         self.test_param = 'nothing'
 
         # add the desired data fields to tracking
-        # must include stock matrix
-        self.agent_data.stock_matrix = self.stock_matrix
-        self.agent_data.add_data_attributes(['agent_param', 'mixin_param', 'test_param'])
+        self.agent_data.add_data_attributes(['agent_param', 'test_param'])
+        # note that you can add more attributes individually in the mixins
         
-        # this will call the inits for each mixins
-        # call this AFTER initializing the agent params, then the mixins can validate their required params exist
+        # this will call the inits for each mixin
         super().__init__()
 
     def __repr__(self):

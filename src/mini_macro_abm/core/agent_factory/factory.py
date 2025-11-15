@@ -2,7 +2,6 @@ import logging
 import importlib
 from typing import Dict, Any, List, Type
 
-from mini_macro_abm.core.agent_factory.base_agent import BaseAgent
 from mini_macro_abm.core.registry import Registry
 
 logger = logging.getLogger(__name__)
@@ -70,13 +69,10 @@ class AgentFactory:
         
         # Use the actual agent_configs from registry
         for agent_name, agent_config in self.registry.agent_configs.items():
-            try:
-                composed_class = self._compose_agent_class(agent_name, agent_config)
-                composed_agent_classes[agent_name] = composed_class
-                logger.info(f"Composed agent class for '{agent_name}'")
-            except Exception as e:
-                logger.error(f"Failed to compose agent '{agent_name}': {e}")
-                continue
+            composed_class = self._compose_agent_class(agent_name, agent_config)
+            composed_agent_classes[agent_name] = composed_class
+            logger.info(f"Composed agent class for '{agent_name}'")
+
         
         return composed_agent_classes
     

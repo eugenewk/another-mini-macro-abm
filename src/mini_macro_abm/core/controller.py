@@ -51,7 +51,7 @@ class Controller:
 
 # test script to run simulation
 controller = Controller()
-controller.run_simulation('src/simulation_runs/combined_run_config.yaml')
+controller.run_simulation('src/simulation_runs/more_complex_config.yaml')
 
 
 

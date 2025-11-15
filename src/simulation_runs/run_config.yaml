@@ -1,6 +1,0 @@
-simulation:
-  steps: 5
-
-model: "src/models/simple_model/model_config.yaml"
-
-output_dir: "src/simulation_runs/outputs"

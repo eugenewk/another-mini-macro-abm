@@ -6,16 +6,15 @@ import copy
 
 
 class AgentDataObject:
-    def __init__(self, id):
+    def __init__(self, id, stock_matrix):
         self.agent_id: int = id
-        self.stock_matrix: StockMatrix = None
+        self.stock_matrix: StockMatrix = stock_matrix
         self.data: Dict[str, List] = {
             'step' : [],
             'stock_matrix_snapshots' : []
         }
 
-    def add_data_attributes(self, stock_matrix: StockMatrix, attrs: List[str]):
-        self.stock_matrix = stock_matrix
+    def add_data_attributes(self, attrs: List[str]):
         for attr in attrs:
             self.data[attr] = []
 
