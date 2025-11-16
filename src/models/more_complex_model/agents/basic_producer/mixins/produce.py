@@ -5,7 +5,13 @@ class ProductionMixin:
     def __init__(self):
         # note: define parameters in the main agent class
 
-        required_attrs = ['daily_production']
+        # add production
+        self.daily_production = 1
+
+        # add the desired data fields to tracking
+        self.agent_data.add_data_attributes(['daily_production'])
+
+        required_attrs = [] # use if any agent attrs are required for this mixin
 
         for attr in required_attrs:
             if not hasattr(self, attr):

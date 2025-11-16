@@ -10,12 +10,6 @@ class BasicProducer:
         self.id = id
         self.stock_matrix = StockMatrix() # gives stock matrix
         self.agent_data = AgentDataObject(id, self.stock_matrix) # creates data tracking object
-
-        # add production
-        self.daily_production = 1
-
-        # add the desired data fields to tracking
-        self.agent_data.add_data_attributes(['daily_production'])
         
         # this will call the inits for each mixins
         # call this AFTER initializing the agent params, then the mixins can validate their required params exist
