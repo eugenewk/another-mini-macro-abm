@@ -1,5 +1,6 @@
 from typing import Dict
 import uuid
+from mini_macro_abm.core.data_collector import MarketDataObject
 
 class MarketListing:
     def __init__(self, seller_id: str, good_type: str, quantity: int, price: int):
@@ -13,6 +14,20 @@ class BasicMarket:
     def __init__(self):
         # structure: {good_type: {listing_id: MarketListing}}
         self.listings: Dict[str, Dict[str, MarketListing]] = {}
+        self.market_data = MarketDataObject('basic_market')
+
+        self.market_data.add_data_attributes(['total_goods_listed', 'listings'])
+
+    # define custom data classes like this
+    @property
+    def total_goods_listed(self) -> Dict[str, int]:
+        goods_totals = {}
+        for good_type, listings in self.listings.items():
+            total_qty = 0
+            for listing in listings.values():
+                total_qty += listing.quantity
+            goods_totals[good_type] = total_qty
+        return goods_totals
 
     def add_listing(self, seller: str, good: str, qty: int, price: int) -> str:
         listing = MarketListing(seller, good, qty, price)
@@ -42,3 +57,10 @@ class BasicMarket:
                 return True
             
         return False # listing not found
+
+    def update_listing_qty(self, listing_id: str, new_qty: int) -> bool:
+        # update qty listed
+        for good_type, listings in self.listings.items():
+            if listing_id in listings:
+                listing = listings[listing_id]
+                listing.quantity = new_qty

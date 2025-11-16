@@ -18,7 +18,7 @@ class SimEngine:
                     
     def run_simulation(self, output_data: bool):
 
-        data = DataCollector(self.agents)
+        data = DataCollector(self.agents, self.markets)
 
         # initial setup
         goods_market = self.markets['goods_market']
@@ -36,6 +36,8 @@ class SimEngine:
             data.write_data(self.registry.output_dir)
 
     def _step(self, step: int):  
+        goods_market = self.markets['goods_market']
+
         for household in self.agents['household']:
             household.increment_agent_param()
             household.increment_mixin_attribute()
@@ -43,3 +45,4 @@ class SimEngine:
         
         for firm in self.agents['firm']:
             firm.produce_goods()
+            firm.update_listing_qty(goods_market)

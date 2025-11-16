@@ -31,7 +31,7 @@ class BasicProducer:
         self.stock_matrix.manage_inventory_item(item, amount)
 
     def create_goods_listing(self, goods_market: BasicMarket) -> bool:
-        self.goods_listing_id = goods_market.add_listing(self.id, self.item, 0, self.item_price)
+        self.goods_listing_id = goods_market.add_listing(self.id, self.item, 1, self.item_price)
 
     def update_listing_price(self, goods_market: BasicMarket, new_price: int) -> bool:
         if not self.goods_listing_id: 
@@ -39,6 +39,13 @@ class BasicProducer:
         
         # if listing exists, allow update
         goods_market.update_listing_price(self.goods_listing_id, new_price)
+
+    def update_listing_qty(self, goods_market: BasicMarket) -> bool:
+        # note: right now this will just set listing qty equal to inventory
+        if not self.goods_listing_id:
+            raise ValueError(f"listing does not exist for {self.id}, tried to update")
+        
+        goods_market.update_listing_qty(self.goods_listing_id, self.stock_matrix.inventory[self.item])
        
 
 
