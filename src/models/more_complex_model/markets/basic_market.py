@@ -10,6 +10,9 @@ class MarketListing:
         self.quantity = quantity
         self.price = price
 
+    def __repr__(self):
+        return f"{self.seller_id}: {self.good_type} | {self.quantity}"
+
 class BasicMarket:
     def __init__(self):
         # structure: {good_type: {listing_id: MarketListing}}
@@ -64,3 +67,5 @@ class BasicMarket:
             if listing_id in listings:
                 listing = listings[listing_id]
                 listing.quantity = new_qty
+
+    

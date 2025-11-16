@@ -20,11 +20,8 @@ class SimEngine:
 
         data = DataCollector(self.agents, self.markets)
 
-        # initial setup
-        goods_market = self.markets['goods_market']
-
-        for firm in self.agents['firm']:
-            firm.create_goods_listing(goods_market) # note: need to add markets in here as well
+        # initialize run
+        self._initialize_run()
 
         # run each step
         for step in range(self.totalSimSteps):
@@ -34,6 +31,16 @@ class SimEngine:
         data.display_data()
         if output_data:
             data.write_data(self.registry.output_dir)
+
+    def _initialize_run(self):
+
+        # initial setup steps here
+
+        goods_market = self.markets['goods_market']
+
+        # create initial goods listing
+        for firm in self.agents['firm']:
+            firm.create_goods_listing(goods_market) # note: need to add markets in here as well
 
     def _step(self, step: int):  
         goods_market = self.markets['goods_market']

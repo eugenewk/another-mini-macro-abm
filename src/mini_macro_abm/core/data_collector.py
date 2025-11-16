@@ -29,7 +29,7 @@ class AgentDataObject:
         for attr in self.data.keys():
             if attr != 'step' and attr != 'stock_matrix_snapshots':
                 data = getattr(agent_object, attr)
-                self.data[attr].append(data)
+                self.data[attr].append(copy.deepcopy(data))
     
     def return_data(self) -> pd.DataFrame:
         df = pd.DataFrame(self.data)
@@ -55,7 +55,7 @@ class MarketDataObject: # noting this is mostly a duplicate of the above for now
         for attr in self.data.keys():
             if attr != 'step' and attr != 'stock_matrix_snapshots':
                 data = getattr(market_object, attr)
-                self.data[attr].append(data)
+                self.data[attr].append(copy.deepcopy(data))
     
     def return_data(self) -> pd.DataFrame:
         df = pd.DataFrame(self.data)
@@ -102,6 +102,8 @@ class DataCollector:
 
         # combine all agent dfs into one df and then output to csv
         output_dfs: Dict[str, List[pd.DataFrame]] = {}
+
+        # create output dfs for each agent type
         for agent_type, agents in self.agent_list.items():
             agent_type_dfs = []
             for agent in agents:
@@ -109,12 +111,19 @@ class DataCollector:
                 agent_type_dfs.append(agent_df)
             output_dfs[agent_type] = agent_type_dfs
 
+        # TODO: need to add market outputs to csv as well
+        for market_type, market in self.market_list.items():
+            market_df = market.market_data.return_data()
+            output_dfs[market_type] = [market_df]
+        
         # for each entry in output_dfs, create one file per agent type and combine into one df
         for agent_type, dfs in output_dfs.items():
             combined_df = pd.concat(dfs, ignore_index=True)
             output_file = output_path / f'{agent_type}_data.csv'
             combined_df.to_csv(output_file, index=False)
 
-        # TODO: need to add market outputs to csv as well
+
+
+
 
                 
