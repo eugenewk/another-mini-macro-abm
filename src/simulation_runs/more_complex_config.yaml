@@ -4,7 +4,7 @@ simulation:
   # note that needs proper controls for random seeds
 
 model:
-  model_pkg: more_complex_model
+  model_dir: more_complex_model
   agents:
     household:
       count: 10

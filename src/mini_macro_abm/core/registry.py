@@ -99,8 +99,8 @@ class Registry:
         # load market configs
         self.market_configs = self.model_config.get('markets')
 
-        # now resolve all agent paths using model_pkg
-        self.model_pkg = f"models.{self.model_config.get('model_pkg')}"
+        # now resolve all agent paths using model_dir
+        self.model_pkg = f"models.{self.model_config.get('model_dir')}"
         if not self.model_pkg:
             raise ValueError("no model_pkg specified in config")
 
