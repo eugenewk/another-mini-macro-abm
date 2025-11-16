@@ -10,6 +10,9 @@ class BasicProducer:
         self.id = id
         self.stock_matrix = StockMatrix() # gives stock matrix
         self.agent_data = AgentDataObject(id, self.stock_matrix) # creates data tracking object
+        self.item = 'item'
+        self.item_price = 1
+        self.goods_listing_id = None
         
         # this will call the inits for each mixins
         # call this AFTER initializing the agent params, then the mixins can validate their required params exist
@@ -17,9 +20,6 @@ class BasicProducer:
 
     def __repr__(self):
         return f"{self.id}"
-
-    def increment_agent_param(self):
-        self.agent_param += 2
     
     def add_cash(self, amount):
         self.stock_matrix.manage_cash(amount)
@@ -29,6 +29,16 @@ class BasicProducer:
 
     def add_item(self, item: str, amount: int):
         self.stock_matrix.manage_inventory_item(item, amount)
+
+    def create_goods_listing(self, goods_market: BasicMarket) -> bool:
+        self.goods_listing_id = goods_market.add_listing(self.id, self.item, 0, self.item_price)
+
+    def update_listing_price(self, goods_market: BasicMarket, new_price: int) -> bool:
+        if not self.goods_listing_id: 
+            raise ValueError(f"listing does not exist for {self.id}, tried to update")
+        
+        # if listing exists, allow update
+        goods_market.update_listing_price(self.goods_listing_id, new_price)
        
 
 

@@ -7,7 +7,7 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from src.mini_macro_abm.core.registry import Registry
-from mini_macro_abm.core.agent_factory.factory import AgentFactory
+from mini_macro_abm.core.factory.component_factory import AgentFactory
 
 def debug_agent_factory():
     """Test the agent factory and display composed agent classes."""

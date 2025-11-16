@@ -6,9 +6,10 @@ from mini_macro_abm.core.data_collector import DataCollector
 logger = logging.getLogger(__name__)
 
 class SimEngine:
-    def __init__(self, registry: Registry, agents: Dict[str, List[object]]):
-        self.registry: Registry = registry
-        self.agents: Dict[str, List[object]] = agents
+    def __init__(self, registry: Registry, agents: Dict[str, List[object]], markets: Dict[str, object]):
+        self.registry = registry
+        self.agents = agents
+        self.markets = markets
         self.schedule: object # to be implemented
         self.totalSimSteps: int # total steps for the simulation
     
@@ -19,6 +20,13 @@ class SimEngine:
 
         data = DataCollector(self.agents)
 
+        # initial setup
+        goods_market = self.markets['goods_market']
+
+        for firm in self.agents['firm']:
+            firm.create_goods_listing(goods_market) # note: need to add markets in here as well
+
+        # run each step
         for step in range(self.totalSimSteps):
             self._step(step)
             data.collect_data(step)
@@ -31,13 +39,7 @@ class SimEngine:
         for household in self.agents['household']:
             household.increment_agent_param()
             household.increment_mixin_attribute()
-            
-            if step < 2:
-                household.add_cash(10)
-                household.add_item('item', 1)
-            else: 
-                household.remove_cash(10)
-                household.add_item('item', -2)
+            household.add_cash(10)
         
         for firm in self.agents['firm']:
             firm.produce_goods()

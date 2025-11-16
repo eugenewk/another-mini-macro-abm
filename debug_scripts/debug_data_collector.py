@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from src.mini_macro_abm.core.data_collector import data, DataCollector
 from src.mini_macro_abm.core.registry import Registry
-from src.mini_macro_abm.core.agent_factory.factory import AgentFactory
+from mini_macro_abm.core.factory.component_factory import AgentFactory
 
 def debug_data_decorator():
     """Test the @data decorator directly"""

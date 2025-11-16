@@ -1,6 +1,5 @@
 """simple agent file"""
 from models.simple_model.agents.simple_agent.mixins import simple_mixin
-from mini_macro_abm.core.agent_factory.base_agent import BaseAgent
 from mini_macro_abm.core.data_collector import AgentDataObject
 from mini_macro_abm.core.agent_utils.stock_matrix import StockMatrix
 

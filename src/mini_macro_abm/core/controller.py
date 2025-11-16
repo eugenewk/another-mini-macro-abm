@@ -2,7 +2,7 @@ import logging
 from pathlib import Path
 from typing import List
 from mini_macro_abm.core.registry import Registry
-from mini_macro_abm.core.agent_factory.factory import AgentFactory
+from mini_macro_abm.core.factory.component_factory import ComponentFactory
 from mini_macro_abm.core.sim_engine.engine import SimEngine
 
 logger = logging.getLogger(__name__)
@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 class Controller:
     def __init__(self):
         self.registry = Registry()
-        self.factory = AgentFactory(self.registry)
+        self.factory = ComponentFactory(self.registry)
         self.simEngine = None # set at runtime
 
 
@@ -36,8 +36,10 @@ class Controller:
         agentRoster = self.factory.instantiate_agents(agentClasses)
         print(agentRoster)
 
+        marketList = self.factory.instantiate_markets()
+
         # assign roster and registry to sim engine
-        self.simEngine = SimEngine(self.registry, agentRoster)
+        self.simEngine = SimEngine(self.registry, agentRoster, marketList)
 
         # set initial agent values from registry config
         # self.simEngine.set_initial_agent_values()

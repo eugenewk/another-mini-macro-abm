@@ -6,7 +6,7 @@ from mini_macro_abm.core.registry import Registry
 
 logger = logging.getLogger(__name__)
 
-class AgentFactory:
+class ComponentFactory:
     
     def __init__(self, registry: Registry):
         """
@@ -97,6 +97,16 @@ class AgentFactory:
             agent_roster[agent_name] = agents
 
         return agent_roster
+    
+    def instantiate_markets(self) -> Dict[str, object]:
+        markets = {}
+        for market_type, market_path in self.registry.market_configs.items():
+            cls_path = market_path.get('market_class_path')
+            market_class = self._import_class_from_path(cls_path)
+            markets[market_type] = market_class()
+        return markets
+
+
     
 
 
