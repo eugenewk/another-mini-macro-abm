@@ -1,4 +1,5 @@
 import logging
+from pathlib import Path
 from typing import List
 from mini_macro_abm.core.registry import Registry
 from mini_macro_abm.core.agent_factory.factory import AgentFactory
@@ -51,7 +52,8 @@ class Controller:
 
 # test script to run simulation
 controller = Controller()
-controller.run_simulation('src/simulation_runs/more_complex_config.yaml')
+config_path = Path('src/simulation_runs/more_complex_config.yaml')
+controller.run_simulation(str(config_path))
 
 
 

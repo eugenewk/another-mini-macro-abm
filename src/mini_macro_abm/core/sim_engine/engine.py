@@ -28,14 +28,16 @@ class SimEngine:
             data.write_data(self.registry.output_dir)
 
     def _step(self, step: int):  
-        for agent_type, agent_list in self.agents.items():
-            for agent in agent_list:
-                agent.increment_agent_param()
-                agent.increment_mixin_attribute()
-                
-                if step < 2:
-                    agent.add_cash(10)
-                    agent.add_item('item', 1)
-                else: 
-                    agent.remove_cash(10)
-                    agent.add_item('item', -2)
+        for household in self.agents['household']:
+            household.increment_agent_param()
+            household.increment_mixin_attribute()
+            
+            if step < 2:
+                household.add_cash(10)
+                household.add_item('item', 1)
+            else: 
+                household.remove_cash(10)
+                household.add_item('item', -2)
+        
+        for firm in self.agents['firm']:
+            firm.produce_goods()

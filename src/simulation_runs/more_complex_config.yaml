@@ -1,5 +1,5 @@
 simulation:
-  steps: 2
+  steps: 10
   output_dir: "src/simulation_runs/complex_outputs"
   # note that needs proper controls for random seeds
 

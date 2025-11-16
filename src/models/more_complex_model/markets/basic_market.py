@@ -17,6 +17,7 @@ class BasicMarket:
     def add_listing(self, seller: str, good: str, qty: int, price: int) -> str:
         listing = MarketListing(seller, good, qty, price)
 
+        # create new dict of good listings if not exists
         if good not in self.listings:
             self.listings[good] = {}
 
