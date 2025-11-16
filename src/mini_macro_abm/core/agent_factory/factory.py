@@ -69,9 +69,12 @@ class AgentFactory:
         
         # Use the actual agent_configs from registry
         for agent_name, agent_config in self.registry.agent_configs.items():
-            composed_class = self._compose_agent_class(agent_name, agent_config)
-            composed_agent_classes[agent_name] = composed_class
-            logger.info(f"Composed agent class for '{agent_name}'")
+            try:
+                composed_class = self._compose_agent_class(agent_name, agent_config)
+                composed_agent_classes[agent_name] = composed_class
+                logger.info(f"Composed agent class for '{agent_name}'")
+            except AttributeError as e:
+                raise ValueError(f"failed to create {agent_name} from {agent_config}")
 
         
         return composed_agent_classes

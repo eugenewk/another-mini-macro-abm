@@ -1,22 +1,25 @@
 simulation:
-  steps: 5
+  steps: 2
   output_dir: "src/simulation_runs/complex_outputs"
   # note that needs proper controls for random seeds
 
 model:
+  model_pkg: more_complex_model
   agents:
     household:
-      count: 5
-      agent_class_path: models.more_complex_model.agents.basic_household.household.BasicHousehold
-      mixins:
-        - models.more_complex_model.agents.basic_household.mixins.budget.BudgetMixin
-        - models.more_complex_model.agents.basic_household.mixins.market_interactions.MarketMixin
+      count: 10
+      agent_dir: basic_household # sets the agent folder within /agents
+      agent_class: household.BasicHousehold # points to the main agent class, {file}.{ClassName}
+      mixins: # pulls from the mixin folder in each agent using {file}.{MixinClass}
+        - budget.BudgetMixin
+        - market_interactions.MarketMixin
     firm:
       count: 2
-      agent_class_path: models.more_complex_model.agents.basic_producer.producer.BasicProducer
+      agent_dir: basic_producer
+      agent_class: producer.BasicProducer
       mixins:
-        - models.more_complex_model.agents.basic_producer.mixins.produce.ProductionMixin
+        - produce.ProductionMixin
   markets:
     goods_market: 
-      market_class_path: models.more_complex_model.markets.basic_market.BasicMarket
+      market_class_path: markets.basic_market.BasicMarket
 
