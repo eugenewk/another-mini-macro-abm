@@ -3,8 +3,9 @@ import uuid
 from mini_macro_abm.core.data_collector import MarketDataObject
 
 class MarketListing:
-    def __init__(self, seller_id: str, good_type: str, quantity: int, price: int):
+    def __init__(self, seller: object, seller_id: str, good_type: str, quantity: int, price: int):
         self.listing_id = str(uuid.uuid4())
+        self.seller = seller
         self.seller_id = seller_id
         self.good_type = good_type
         self.quantity = quantity
@@ -32,8 +33,8 @@ class BasicMarket:
             goods_totals[good_type] = total_qty
         return goods_totals
 
-    def add_listing(self, seller: str, good: str, qty: int, price: int) -> str:
-        listing = MarketListing(seller, good, qty, price)
+    def add_listing(self, seller: object, seller_id: str, good: str, qty: int, price: int) -> str:
+        listing = MarketListing(seller, seller_id, good, qty, price)
 
         # create new dict of good listings if not exists
         if good not in self.listings:
