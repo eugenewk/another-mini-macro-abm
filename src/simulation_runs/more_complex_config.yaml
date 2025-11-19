@@ -1,5 +1,5 @@
 simulation:
-  steps: 3
+  steps: 10
   output_dir: "src/simulation_runs/complex_outputs" 
 
 model:
