@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 import uuid
 from mini_macro_abm.core.data_collector import MarketDataObject
 
@@ -67,5 +67,15 @@ class BasicMarket:
             if listing_id in listings:
                 listing = listings[listing_id]
                 listing.quantity = new_qty
+
+    def active_listings_for_good(self, good:str) -> List[MarketListing]:
+        all_good_listings = self.listings[good]
+
+        # filters only listings with active quantities
+        active_listings = [
+            listing for listing in all_good_listings.values() 
+            if listing.quantity > 0
+        ]
+        return active_listings
 
     

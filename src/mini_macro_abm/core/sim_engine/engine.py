@@ -49,6 +49,7 @@ class SimEngine:
             household.increment_agent_param()
             household.increment_mixin_attribute()
             household.add_cash(10)
+            household.buy_goods('item', goods_market)
         
         for firm in self.agents['firm']:
             firm.produce_goods()

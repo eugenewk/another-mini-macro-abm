@@ -1,17 +1,17 @@
 simulation:
-  steps: 10
+  steps: 3
   output_dir: "src/simulation_runs/complex_outputs" 
 
 model:
   model_dir: more_complex_model
   agents:
     household:
-      count: 10
+      count: 3
       agent_dir: basic_household # sets the agent folder
       agent_class: household.BasicHousehold # points to the main agent class, {file}.{ClassName}
       mixins: # agents are composed using mixins for specific behaviours {file}.{MixinClass}
         - budget.BudgetMixin
-        - market_interactions.MarketMixin
+        - market_interactions.GoodsMarketInteractions
     firm:
       count: 2
       agent_dir: basic_producer
@@ -22,4 +22,3 @@ model:
     goods_market: 
       market_class_path: markets.basic_market.BasicMarket
 
-  

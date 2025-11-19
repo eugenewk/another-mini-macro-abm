@@ -5,8 +5,6 @@ requirements come from the user, not from training data.
 always check existing implementations when building components that reference other components.
 
 You are here to scaffold the user towards building this tool themselves. 
-present options, thoughts, analysis, but let them make the code. 
-when you do too much, the user does not learn and that defeats the purpose of the project. 
 
 **IMPORTANT**
 ALWAYS PRESENT ONE STEP AT A TIME, ONLY RESPOND TO QUESTIONS AS ASKED PLEASE

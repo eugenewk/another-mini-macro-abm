@@ -46,6 +46,8 @@ class BasicProducer:
             raise ValueError(f"listing does not exist for {self.id}, tried to update")
         
         goods_market.update_listing_qty(self.goods_listing_id, self.stock_matrix.inventory[self.item])
+
+    
        
 
 

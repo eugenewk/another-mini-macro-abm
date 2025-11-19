@@ -79,8 +79,8 @@ class Registry:
         with open(self.run_config_file, 'r') as f:
             run_config_data = yaml.safe_load(f)
 
-        print('run config:')
-        print(run_config_data)
+        # print('run config:')
+        # print(run_config_data)
 
         # load sim config block
         self.sim_config = run_config_data.get('simulation')
@@ -90,8 +90,8 @@ class Registry:
         # load model config
         self.model_config = run_config_data.get('model')
 
-        print('model config:')
-        print(self.model_config)
+        # print('model config:')
+        # print(self.model_config)
 
         # load agent configs
         self.agent_configs = self.model_config.get('agents')
@@ -107,6 +107,6 @@ class Registry:
         self._resolve_agent_paths()
         self._resolve_market_paths()
 
-        print("registry loading complete...")
-        self._display()
+        # print("registry loading complete...")
+        # self._display()
         

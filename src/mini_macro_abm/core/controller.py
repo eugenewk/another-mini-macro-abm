@@ -34,7 +34,7 @@ class Controller:
 
         # pass those classes back to get the agents
         agentRoster = self.factory.instantiate_agents(agentClasses)
-        print(agentRoster)
+        # print(agentRoster)
 
         marketList = self.factory.instantiate_markets()
 
@@ -43,11 +43,11 @@ class Controller:
 
         # set initial agent values from registry config
         # self.simEngine.set_initial_agent_values()
-        print(agentRoster)
+        # print(agentRoster)
 
         # load simulation parameters into engine from registry that was previously passed to it
         self.simEngine.set_simulation_params()
-        print(self.simEngine.totalSimSteps)
+        # print(self.simEngine.totalSimSteps)
 
         # run sim
         self.simEngine.run_simulation(output_data=True)

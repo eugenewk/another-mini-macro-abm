@@ -49,7 +49,7 @@ class MarketDataObject: # noting this is mostly a duplicate of the above for now
         # append step data
         self.data['step'].append(step)
 
-        print(self.data.keys())
+        # print(self.data.keys())
 
         # record params
         for attr in self.data.keys():
