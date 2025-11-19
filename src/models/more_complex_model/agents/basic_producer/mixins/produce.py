@@ -6,7 +6,7 @@ class ProductionMixin:
         # note: define parameters in the main agent class
 
         # add production
-        self.daily_production = 1
+        self.daily_production = 2
 
         # add the desired data fields to tracking
         self.agent_data.add_data_attributes(['daily_production'])

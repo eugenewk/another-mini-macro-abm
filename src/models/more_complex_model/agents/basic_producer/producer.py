@@ -19,17 +19,27 @@ class BasicProducer:
         # track purchase orders for each step
         self.purchase_orders: List[Dict] = []
 
-        self.agent_data.add_data_attributes(['item_price', 'daily_purchase_orders'])
+        # note for this step: daily_purchase_orders clears self.purchase_orders list after recording and so must be evaluated last here
+        self.agent_data.add_data_attributes(['item_price', 'count_of_daily_transactions', 'daily_purchase_orders'])
         
-        # this will call the inits for each mixins
+        # this will call the inits for each mixin
         # call this AFTER initializing the agent params, then the mixins can validate their required params exist
         super().__init__()
     
+    # use @property tag to define custom properties
+    # add them to the tracking using self.agent_data.add_data_attributes(['property1', 'property2']) in the init
+    @property
+    def count_of_daily_transactions(self):
+        daily_transactions = len(self.purchase_orders)
+        return daily_transactions
+
     @property
     def daily_purchase_orders(self):
         daily_purchase_orders = copy.deepcopy(self.purchase_orders)
-        self.purchase_orders = [] # clear list for next step
+        self.purchase_orders = [] # clear list for next step, this param must be placed last in the attributes tracking
         return daily_purchase_orders
+    
+
 
 
     def __repr__(self):
@@ -61,7 +71,7 @@ class BasicProducer:
         
         goods_market.update_listing_qty(self.goods_listing_id, self.stock_matrix.inventory[self.item])
 
-    def receive_purchase_order(self, buyer_id: str, good: str, qty_requested: int, payment_amt: int) -> bool:
+    def receive_purchase_order(self, market: BasicMarket, buyer_id: str, good: str, qty_requested: int, payment_amt: int) -> bool:
         # needs to receive a purchase order from a household agent for a particular good
         # first check quantity is available
         qty_available = self.stock_matrix.inventory.get(good, 0) # default to 0 if item doesn't exist
@@ -74,12 +84,17 @@ class BasicProducer:
                 'amt': qty_requested,
                 'total_paid': payment_amt
             }
+            print("purchase successful:")
+            print({str(purchase_order)})
             self.purchase_orders.append(purchase_order)
             # reduce inventory by amount and credit cash by payment amt
             self.stock_matrix.manage_inventory_item(good, -qty_requested)
             self.stock_matrix.manage_cash(payment_amt)
+            self.update_listing_qty(market)
             return True
         else:
+            print("purchase failed")
+            print(f"{qty_requested} by {buyer_id}, only {qty_available} available")
             return False
 
 

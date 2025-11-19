@@ -4,6 +4,8 @@ from pathlib import Path
 from mini_macro_abm.core.agent_utils.stock_matrix import StockMatrix
 import copy
 
+# helper functions
+
 class AgentDataObject:
     def __init__(self, id, stock_matrix):
         self.agent_id: int = id
@@ -14,6 +16,10 @@ class AgentDataObject:
         }
 
     def add_data_attributes(self, attrs: List[str]):
+        # handle case where single string is added
+        if isinstance(attrs, str):
+            attrs = [attrs]
+
         for attr in attrs:
             self.data[attr] = []
 
@@ -42,6 +48,9 @@ class MarketDataObject: # noting this is mostly a duplicate of the above for now
         self.data: Dict[str, List] = {'step' : [],}
 
     def add_data_attributes(self, attrs: List[str]):
+        if isinstance(attrs, str):
+            attrs = [attrs]
+            
         for attr in attrs:
             self.data[attr] = []
 

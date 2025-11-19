@@ -13,6 +13,7 @@ class GoodsMarketInteractions:
         chosen_listing: MarketListing = self._choose_listing(good, market)
 
         if not chosen_listing: # if no listings available and none chosen
+            print(f'no listings available')
             return None
         
         seller: BasicProducer = chosen_listing.seller
@@ -20,7 +21,7 @@ class GoodsMarketInteractions:
         total_price = chosen_qty * chosen_listing.price # note: add budgeting logic later in _choose_qty()
     
         # below returns a bool if successful
-        purchase_successful = seller.receive_purchase_order(self.id, chosen_listing.good_type, chosen_qty, total_price)
+        purchase_successful = seller.receive_purchase_order(market, self.id, chosen_listing.good_type, chosen_qty, total_price)
 
         if purchase_successful:
             self.stock_matrix.manage_inventory_item(good, chosen_qty) # use stock matrix function
