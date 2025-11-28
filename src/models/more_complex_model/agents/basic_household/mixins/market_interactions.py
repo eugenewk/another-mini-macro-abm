@@ -1,4 +1,4 @@
-from models.more_complex_model.markets.basic_market import BasicMarket, MarketListing
+from models.more_complex_model.markets.goods_market import GoodsMarket, GoodsMarketListing
 from models.more_complex_model.agents.basic_producer.producer import BasicProducer
 import random
 from typing import List
@@ -8,9 +8,9 @@ class GoodsMarketInteractions:
         # don't define any attributes here, just interaction functions
         pass
 
-    def buy_goods(self, good: str, market: BasicMarket):
+    def buy_goods(self, good: str, market: GoodsMarket):
         # main function for goods purchasing
-        chosen_listing: MarketListing = self._choose_listing(good, market)
+        chosen_listing: GoodsMarketListing = self._choose_listing(good, market)
 
         if not chosen_listing: # if no listings available and none chosen
             print(f'no listings available')
@@ -33,17 +33,17 @@ class GoodsMarketInteractions:
 
         
         
-    def _choose_listing(self, good:str, market: BasicMarket):
-        all_listings: List[MarketListing] = market.active_listings_for_good(good)
+    def _choose_listing(self, good:str, market: GoodsMarket):
+        all_listings: List[GoodsMarketListing] = market.active_listings_for_good(good)
         
         if not all_listings:
             return None # none available
         
-        chosen_listing: MarketListing = random.choice(all_listings)
+        chosen_listing: GoodsMarketListing = random.choice(all_listings)
         
         print(f"chose listing: {chosen_listing}, id: {chosen_listing.listing_id}")
         return chosen_listing
     
-    def _choose_qty(self, listing: MarketListing):
+    def _choose_qty(self, listing: GoodsMarketListing):
         qty_available = listing.quantity
         return 1

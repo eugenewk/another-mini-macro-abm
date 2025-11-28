@@ -1,24 +1,25 @@
 from typing import Dict, List
 import uuid
 from mini_macro_abm.core.data_collector import MarketDataObject
+from dataclasses import dataclass, field
 
-class MarketListing:
-    def __init__(self, seller: object, seller_id: str, good_type: str, quantity: int, price: int):
-        self.listing_id = str(uuid.uuid4())
-        self.seller = seller
-        self.seller_id = seller_id
-        self.good_type = good_type
-        self.quantity = quantity
-        self.price = price
+@dataclass
+class GoodsMarketListing:
+    seller: object
+    seller_id: str
+    good_type: str
+    quantity: int
+    price: int
+    listing_id: str = field(default_factory=lambda: str(uuid.uuid4()))
 
     def __repr__(self):
-        return f"{self.seller_id}: {self.good_type} | {self.quantity}"
+        return f"{self.seller_id}: {self.good_type} x{self.quantity}"
 
-class BasicMarket:
+class GoodsMarket:
     def __init__(self):
-        # structure: {good_type: {listing_id: MarketListing}}
-        self.listings: Dict[str, Dict[str, MarketListing]] = {}
-        self.market_data = MarketDataObject('basic_market')
+        # structure: {good_type: {listing_id: GoodsMarketListing}}
+        self.listings: Dict[str, Dict[str, GoodsMarketListing]] = {}
+        self.market_data = MarketDataObject('goods_market')
 
         self.market_data.add_data_attributes(['total_goods_listed', 'listings'])
 
@@ -34,7 +35,7 @@ class BasicMarket:
         return goods_totals
 
     def add_listing(self, seller: object, seller_id: str, good: str, qty: int, price: int) -> str:
-        listing = MarketListing(seller, seller_id, good, qty, price)
+        listing = GoodsMarketListing(seller, seller_id, good, qty, price)
 
         # create new dict of good listings if not exists
         if good not in self.listings:
@@ -69,7 +70,7 @@ class BasicMarket:
                 listing = listings[listing_id]
                 listing.quantity = new_qty
 
-    def active_listings_for_good(self, good:str) -> List[MarketListing]:
+    def active_listings_for_good(self, good:str) -> List[GoodsMarketListing]:
         all_good_listings = self.listings[good]
 
         # filters only listings with active quantities

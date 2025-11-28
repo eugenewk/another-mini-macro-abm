@@ -1,7 +1,7 @@
 """simple agent file"""
 from mini_macro_abm.core.data_collector import AgentDataObject
 from mini_macro_abm.core.agent_utils.stock_matrix import StockMatrix
-from models.more_complex_model.markets.basic_market import BasicMarket
+from models.more_complex_model.markets.goods_market import GoodsMarket
 from typing import List, Dict
 import copy
 
@@ -39,9 +39,6 @@ class BasicProducer:
         self.purchase_orders = [] # clear list for next step, this param must be placed last in the attributes tracking
         return daily_purchase_orders
     
-
-
-
     def __repr__(self):
         return f"{self.id}"
     
@@ -54,24 +51,24 @@ class BasicProducer:
     def add_item(self, item: str, amount: int):
         self.stock_matrix.manage_inventory_item(item, amount)
 
-    def create_goods_listing(self, goods_market: BasicMarket) -> bool:
+    def create_goods_listing(self, goods_market: GoodsMarket) -> bool:
         self.goods_listing_id = goods_market.add_listing(self, self.id, self.item, 1, self.item_price)
 
-    def update_listing_price(self, goods_market: BasicMarket, new_price: int) -> bool:
+    def update_listing_price(self, goods_market: GoodsMarket, new_price: int) -> bool:
         if not self.goods_listing_id: 
             raise ValueError(f"listing does not exist for {self.id}, tried to update")
         
         # if listing exists, allow update
         goods_market.update_listing_price(self.goods_listing_id, new_price)
 
-    def update_listing_qty(self, goods_market: BasicMarket) -> bool:
+    def update_listing_qty(self, goods_market: GoodsMarket) -> bool:
         # note: right now this will just set listing qty equal to inventory
         if not self.goods_listing_id:
             raise ValueError(f"listing does not exist for {self.id}, tried to update")
         
         goods_market.update_listing_qty(self.goods_listing_id, self.stock_matrix.inventory[self.item])
 
-    def receive_purchase_order(self, market: BasicMarket, buyer_id: str, good: str, qty_requested: int, payment_amt: int) -> bool:
+    def receive_purchase_order(self, market: GoodsMarket, buyer_id: str, good: str, qty_requested: int, payment_amt: int) -> bool:
         # needs to receive a purchase order from a household agent for a particular good
         # first check quantity is available
         qty_available = self.stock_matrix.inventory.get(good, 0) # default to 0 if item doesn't exist
