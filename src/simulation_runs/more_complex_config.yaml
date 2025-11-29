@@ -9,10 +9,12 @@ model:
       count: 3
       agent_dir: basic_household # sets the agent folder
       agent_class: household.BasicHousehold # points to the main agent class, {file}.{ClassName}
-      mixins: # agents are composed using mixins for specific behaviours {file}.{MixinClass}
+      mixins: # agents are composed using mixins for specific behaviours {file}.{MixinClass}.
         - budget.BudgetMixin
         - market_interactions.GoodsMarketInteractions
-        - market_interactions.LaborMarketInteractions       
+        - employment_seeking.LaborMarketInteractions
+        - employment_seeking.EmploymentMixin  
+
     firm:
       count: 2
       agent_dir: basic_producer

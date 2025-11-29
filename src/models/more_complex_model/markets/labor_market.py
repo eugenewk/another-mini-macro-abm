@@ -56,6 +56,14 @@ class LaborMarket:
             return True
         else:
             return False # listing not found
+        
+    def update_listing_role_qty(self, listing_id: str, new_roles_open: int) -> bool:
+        # update price of listing in self.listings where ID matches
+        if listing_id in self.listings.items():
+            self.listings[listing_id].roles_open = new_roles_open
+            return True
+        else:
+            return False # listing not found
 
     def active_job_listings(self) -> List[LaborMarketListing]:
         all_job_listings = self.listings

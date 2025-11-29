@@ -4,6 +4,8 @@ import random
 from typing import List
 
 class GoodsMarketInteractions:
+    def __init__(self):
+        super().__init__() #required to continue the composition chain
 
     def buy_goods(self, good: str, market: GoodsMarket):
         # main function for goods purchasing
@@ -42,6 +44,3 @@ class GoodsMarketInteractions:
         qty_available = listing.quantity
         return 1
     
-
-class LaborMarketInteractions:
-    pass

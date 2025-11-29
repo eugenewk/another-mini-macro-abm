@@ -51,8 +51,9 @@ class SimEngine:
             household.increment_mixin_attribute()
             household.add_cash(10)
             household.buy_goods('item', goods_market)
+            household.apply_to_jobs(labor_market)
         
         for firm in self.agents['firm']:
             firm.produce_goods()
             firm.update_listing_qty(goods_market)
-            firm.post_jobs(labor_market)
+            firm.manage_workforce(labor_market)

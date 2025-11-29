@@ -1,18 +1,40 @@
-from models.more_complex_model.markets.labor_market import LaborMarket, LaborMarketListing
+from models.more_complex_model.markets.labor_market import LaborMarket, EmploymentContract
+from typing import Dict
 
 class HiringMixin:
     def __init__(self):
-        self.positions_to_hire = 1
+        self.desired_workforce = 1
         self.wage_offer = 10
         self.labor_market_listing_id = None
+        self.employment_contracts: Dict[str, EmploymentContract] = {}  # usage: {employee.id: ContractObject}
+        self.is_hiring: bool = False
 
         super().__init__()
 
-    def post_jobs(self, labor_market: LaborMarket):
-        # very simple logic for now, should just keep the posting open. 
-        if self.labor_market_listing_id is None:
-            self.labor_market_listing_id = labor_market.add_job_listing(self, self.positions_to_hire, self.wage_offer)
-        else: 
-            labor_market.update_listing_wage(self.labor_market_listing_id, self.wage_offer)
+    def manage_workforce(self, labor_market: LaborMarket):
+        # check gap to target workforce
+        current_workforce = len(self.employment_contracts)
+        if current_workforce < self.desired_workforce: # hiring
+            self.is_hiring = True
+            gap_to_target = self.desired_workforce - current_workforce
+            # make job posting if none exists
+            if self.labor_market_listing_id is None:
+                self.labor_market_listing_id = labor_market.add_job_listing(self, gap_to_target, self.wage_offer)
+            else: # listing already exists, update with roles open
+                labor_market.update_listing_role_qty(self.labor_market_listing_id, gap_to_target)
+        else: # no gap to target, stop hiring
+            self.is_hiring = False
+            # remove listing if exists
+            if self.labor_market_listing_id is not None:
+                labor_market.remove_listing(self.labor_market_listing_id)
+
+    def receive_application(self, applicant: object) -> EmploymentContract:
+        if self.is_hiring:
+            contract = EmploymentContract(self, applicant, self.wage_offer)
+            self.employment_contracts[applicant.id] = contract
+        else:
+            return None
+
+        
 
     
