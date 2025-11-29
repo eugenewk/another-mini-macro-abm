@@ -3,8 +3,8 @@ from typing import List
 
 class LaborMarketInteractions:
     # helper functions for interacting with the labor market
-    def __init__(self):
-        super().__init__() # required to continue agent composition
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs) # required to continue agent composition
 
     def apply_to_jobs(self, labor_market: LaborMarket):
         if not self.is_employed:
@@ -27,7 +27,7 @@ class LaborMarketInteractions:
 
 
 class EmploymentMixin:
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         self.employment_contract: EmploymentContract = None
         self.agent_data.add_data_attributes(['is_employed'])
         super().__init__(*args, **kwargs)

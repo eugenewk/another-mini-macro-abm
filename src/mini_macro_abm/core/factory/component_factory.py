@@ -57,6 +57,7 @@ class ComponentFactory:
             tuple(base_classes + agent_mixins),
             {}
         )
+        print(f"MRO for {agent_name}_sim: {composed_class.__mro__}") # Temporary debug print
 
         return composed_class
     
@@ -105,8 +106,3 @@ class ComponentFactory:
             market_class = self._import_class_from_path(cls_path)
             markets[market_type] = market_class()
         return markets
-
-
-    
-
-

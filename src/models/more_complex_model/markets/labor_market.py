@@ -71,7 +71,7 @@ class LaborMarket:
         # filters only listings with active quantities
         active_listings = [
             listing for listing in all_job_listings.values() 
-            if listing.quantity > 0
+            if listing.roles_open > 0
         ]
         return active_listings
 

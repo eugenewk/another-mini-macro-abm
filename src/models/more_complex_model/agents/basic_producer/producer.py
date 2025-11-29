@@ -7,7 +7,7 @@ import copy
 
 class BasicProducer:
 
-    def __init__(self, id):
+    def __init__(self, id, *args, **kwargs):
         # core setup params, requires id given by sim engine
         self.id = id
         self.stock_matrix = StockMatrix() # gives stock matrix
@@ -24,7 +24,7 @@ class BasicProducer:
         
         # this will call the inits for each mixin
         # call this AFTER initializing the agent params, then the mixins can validate their required params exist
-        super().__init__()
+        super().__init__(*args, **kwargs)
     
     # use @property tag to define custom properties
     # add them to the tracking using self.agent_data.add_data_attributes(['property1', 'property2']) in the init
@@ -93,14 +93,3 @@ class BasicProducer:
             print("purchase failed")
             print(f"{qty_requested} by {buyer_id}, only {qty_available} available")
             return False
-
-
-
-
-        
-
-    
-       
-
-
-    

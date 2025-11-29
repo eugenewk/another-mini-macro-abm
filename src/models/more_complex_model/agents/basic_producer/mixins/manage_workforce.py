@@ -2,14 +2,14 @@ from models.more_complex_model.markets.labor_market import LaborMarket, Employme
 from typing import Dict
 
 class HiringMixin:
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         self.desired_workforce = 1
         self.wage_offer = 10
         self.labor_market_listing_id = None
         self.employment_contracts: Dict[str, EmploymentContract] = {}  # usage: {employee.id: ContractObject}
         self.is_hiring: bool = False
 
-        super().__init__()
+        super().__init__(*args, **kwargs)
 
     def manage_workforce(self, labor_market: LaborMarket):
         # check gap to target workforce
@@ -34,7 +34,3 @@ class HiringMixin:
             self.employment_contracts[applicant.id] = contract
         else:
             return None
-
-        
-
-    

@@ -4,7 +4,7 @@ from mini_macro_abm.core.agent_utils.stock_matrix import StockMatrix
 
 class BasicHousehold:
 
-    def __init__(self, id):
+    def __init__(self, id, *args, **kwargs):
         # core setup params, requires id given by sim engine
         self.id = id
         self.stock_matrix = StockMatrix() # gives stock matrix
@@ -20,7 +20,7 @@ class BasicHousehold:
         # note that you can add more attributes individually in the mixins
         
         # this will call the inits for each mixin
-        super().__init__()
+        super().__init__(*args, **kwargs)
 
     def __repr__(self):
         return f"{self.id}"
@@ -36,7 +36,3 @@ class BasicHousehold:
 
     def add_item(self, item: str, amount: int):
         self.stock_matrix.manage_inventory_item(item, amount)
-       
-
-
-    
