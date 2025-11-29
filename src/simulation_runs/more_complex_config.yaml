@@ -11,14 +11,18 @@ model:
       agent_class: household.BasicHousehold # points to the main agent class, {file}.{ClassName}
       mixins: # agents are composed using mixins for specific behaviours {file}.{MixinClass}
         - budget.BudgetMixin
-        - market_interactions.GoodsMarketInteractions       
+        - market_interactions.GoodsMarketInteractions
+        - market_interactions.LaborMarketInteractions       
     firm:
       count: 2
       agent_dir: basic_producer
       agent_class: producer.BasicProducer
       mixins:
         - produce.ProductionMixin
+        - manage_workforce.HiringMixin
   markets:
     goods_market: 
       market_class_path: markets.goods_market.GoodsMarket
+    labor_market:
+      market_class_path: markets.labor_market.LaborMarket
 

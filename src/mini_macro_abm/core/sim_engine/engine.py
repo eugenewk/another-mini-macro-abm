@@ -44,6 +44,7 @@ class SimEngine:
 
     def _step(self, step: int):  
         goods_market = self.markets['goods_market']
+        labor_market = self.markets['labor_market']
 
         for household in self.agents['household']:
             household.increment_agent_param()
@@ -54,3 +55,4 @@ class SimEngine:
         for firm in self.agents['firm']:
             firm.produce_goods()
             firm.update_listing_qty(goods_market)
+            firm.post_jobs(labor_market)

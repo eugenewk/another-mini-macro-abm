@@ -16,6 +16,8 @@ class ProductionMixin:
         for attr in required_attrs:
             if not hasattr(self, attr):
                 raise ValueError(f'{attr} not found in agent class')
+            
+        super().__init__()
 
     def produce_goods(self):
         production_qty = self.daily_production

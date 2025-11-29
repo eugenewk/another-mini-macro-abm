@@ -4,9 +4,6 @@ import random
 from typing import List
 
 class GoodsMarketInteractions:
-    def __init__(self):
-        # don't define any attributes here, just interaction functions
-        pass
 
     def buy_goods(self, good: str, market: GoodsMarket):
         # main function for goods purchasing
@@ -30,9 +27,6 @@ class GoodsMarketInteractions:
         else:
             print("failed to purchase")
 
-
-        
-        
     def _choose_listing(self, good:str, market: GoodsMarket):
         all_listings: List[GoodsMarketListing] = market.active_listings_for_good(good)
         
@@ -47,3 +41,7 @@ class GoodsMarketInteractions:
     def _choose_qty(self, listing: GoodsMarketListing):
         qty_available = listing.quantity
         return 1
+    
+
+class LaborMarketInteractions:
+    pass
