@@ -9,7 +9,13 @@ class HiringMixin:
         self.employment_contracts: Dict[str, EmploymentContract] = {}  # usage: {employee.id: ContractObject}
         self.is_hiring: bool = False
 
+        self.agent_data.add_data_attributes(['workforce_count'])
+
         super().__init__(*args, **kwargs)
+
+    @property
+    def workforce_count(self):
+        return len(self.employment_contracts)
 
     def manage_workforce(self, labor_market: LaborMarket):
         # check gap to target workforce
@@ -32,5 +38,9 @@ class HiringMixin:
         if self.is_hiring:
             contract = EmploymentContract(self, applicant, self.wage_offer)
             self.employment_contracts[applicant.id] = contract
+            # check if needs have been met, if so set is_hiring to False to reject future applications
+            if len(self.employment_contracts) >= self.desired_workforce:
+                self.is_hiring = False
+            return contract
         else:
             return None

@@ -14,16 +14,15 @@ class LaborMarketInteractions:
 
     def _apply_until_employed(self, listings: List[LaborMarketListing]):
         # sort listings by wage offer later, for now just iterate through
-
         for listing in listings:
             potential_employer = listing.hiring_firm
-
             # defined in basic_producer/mixins/manage_workforce.py
             # returns a contract if successful
             employment_contract = potential_employer.receive_application(self)
             if employment_contract: 
                 # if a contract was received back, the application was successful
                 self.employment_contract = employment_contract # self.employment contract defined below in the EmploymentMixin
+                break
 
 
 class EmploymentMixin:
